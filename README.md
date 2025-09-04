@@ -8,36 +8,42 @@ La arquitectura sigue el patrón **MVC (Modelo-Vista-Controlador)**, donde el **
 
 ### **2. Diagrama de Clases del Proyecto**
 
-El diseño de la aplicación se basa en tres entidades principales que se relacionan entre sí:
+El diseño de la aplicación se basa en cinco entidades principales que se relacionan entre sí. Para gestionar los diferentes tipos de usuarios (habitantes, organizadores y personal), se ha implementado una estrategia de **herencia en JPA**, que demuestra el conocimiento de un diseño de bases de datos más complejo.
 
-* **`Usuario`**: Representa a un habitante del pueblo, que puede ser creador y/o participante de eventos.
+* **`Persona`**: Clase abstracta de la cual heredan las demás entidades de usuario.
 
-* **`Evento`**: Representa un evento comunitario, creado por un `Usuario`.
+* **`Habitante`**: Representa a un usuario que puede unirse a eventos como participante.
 
-* **`Participacion`**: Es una entidad de unión que gestiona la relación de muchos a muchos entre `Usuario` y `Evento`. Un `Usuario` puede participar en múltiples `Eventos`, y un `Evento` puede tener muchos `Usuarios` apuntados.
+* **`Organizador`**: Representa a un usuario que puede crear eventos y unirse a ellos como participante.
+
+* **`Staff`**: Representa a un usuario que colabora en la organización de eventos y también puede unirse a otros eventos como participante.
+
+* **`Evento`**: Representa un evento comunitario, creado por un `Organizador`.
 
 A continuación, se presenta un diagrama de clases que ilustra la estructura de datos y sus relaciones:
 
-* **Relación `Usuario` a `Evento`**: Un `Usuario` puede ser el organizador de muchos `Eventos` (relación 1 a N).
+* **Relación de Herencia**: Las clases `Habitante`, `Organizador` y `Staff` heredan de la clase abstracta `Persona`. Se utilizará la estrategia de herencia **Joined** para mantener la normalización de la base de datos.
 
-* **Relación `Usuario` a `Participacion`**: Un `Usuario` puede tener muchas `Participaciones` (relación 1 a N).
+* **Relación `Organizador` a `Evento`**: Un `Organizador` puede crear muchos `Eventos` (relación 1 a N).
 
-* **Relación `Evento` a `Participacion`**: Un `Evento` puede tener muchas `Participaciones` (relación 1 a N).
+* **Relación `Staff` a `Evento`**: Un miembro del `Staff` puede colaborar en muchos `Eventos` (relación 1 a N).
+
+* **Relación `Persona` a `Evento` (Participación)**: Una `Persona` (ya sea `Habitante`, `Organizador` o `Staff`) puede participar en muchos `Eventos`. Esta relación de muchos a muchos se gestiona a través de la entidad de unión `Participación`.
 
 ### **3. Configuración y Setup**
 
 Para configurar y ejecutar el proyecto de forma local, sigue estos pasos:
 
-1.  **Clona el repositorio de GitHub:**
-    `git clone <URL_DEL_REPOSITORIO>`
+1. **Clona el repositorio de GitHub:**
+   `git clone <URL_DEL_REPOSITORIO>`
 
-2.  **Configura la base de datos:**
+2. **Configura la base de datos:**
 
     * Crea una base de datos en MySQL llamada `azaila_db`.
 
     * Ajusta las credenciales de conexión en el archivo `src/main/resources/application.properties` o `application.yml`.
 
-3.  **Ejecuta la aplicación:**
+3. **Ejecuta la aplicación:**
 
     * Desde tu IDE (IntelliJ, Eclipse), ejecuta la clase principal de la aplicación.
 
@@ -61,19 +67,43 @@ La API estará disponible en `http://localhost:8080`.
 
 ### **5. Estructura de Controladores y Rutas**
 
-La API se estructura en tres controladores, cada uno con un conjunto de rutas **RESTful** para gestionar sus respectivas entidades. Se ha priorizado el uso de `PATCH` para actualizaciones parciales, siguiendo las mejores prácticas REST.
+La API se estructura en múltiples controladores, cada uno con un conjunto de rutas **RESTful** para gestionar sus respectivas entidades y roles de usuario. Se ha priorizado el uso de `PATCH` para actualizaciones parciales, siguiendo las mejores prácticas REST.
 
-* **`UsuarioController`** (`/api/v1/usuarios`)
+* **`HabitanteController`** (`/api/v1/habitantes`)
 
-    * **GET `/`**: Obtiene todos los usuarios.
+    * **GET `/`**: Obtiene todos los habitantes.
 
-    * **GET `/{id}`**: Obtiene un usuario por ID.
+    * **GET `/{id}`**: Obtiene un habitante por ID.
 
-    * **POST `/`**: Crea un nuevo usuario.
+    * **POST `/`**: Crea un nuevo habitante.
 
-    * **PATCH `/{id}`**: Actualiza un usuario.
+    * **PATCH `/{id}`**: Actualiza un habitante.
 
-    * **DELETE `/{id}`**: Elimina un usuario.
+    * **DELETE `/{id}`**: Elimina un habitante.
+
+* **`OrganizadorController`** (`/api/v1/organizadores`)
+
+    * **GET `/`**: Obtiene todos los organizadores.
+
+    * **GET `/{id}`**: Obtiene un organizador por ID.
+
+    * **POST `/`**: Crea un nuevo organizador.
+
+    * **PATCH `/{id}`**: Actualiza un organizador.
+
+    * **DELETE `/{id}`**: Elimina un organizador.
+
+* **`StaffController`** (`/api/v1/staff`)
+
+    * **GET `/`**: Obtiene todos los miembros del staff.
+
+    * **GET `/{id}`**: Obtiene un miembro del staff por ID.
+
+    * **POST `/`**: Crea un nuevo miembro del staff.
+
+    * **PATCH `/{id}`**: Actualiza un miembro del staff.
+
+    * **DELETE `/{id}`**: Elimina un miembro del staff.
 
 * **`EventoController`** (`/api/v1/eventos`)
 
@@ -109,4 +139,4 @@ La API se estructura en tres controladores, cada uno con un conjunto de rutas **
 
 ### **8. Miembros del Equipo**
 
-* **Tu Nombre** - Desarrollador y Arquitecto del proyecto.
+* **Carolina Romero** - Desarrolladora y Arquitecta del proyecto.
