@@ -8,14 +8,14 @@ La arquitectura sigue el patrón **MVC (Modelo-Vista-Controlador)**, donde el **
 
 ### **2. Diagrama de Clases del Proyecto**
 
-El diseño de la aplicación se basa en tres entidades principales que se relacionan entre sí:
+El diseño de la aplicación se basa en cinco entidades principales que se relacionan entre sí:
 
-* **`Usuario`**: Representa a un habitante del pueblo, que puede ser creador y/o participante de eventos.
-
-* **`Evento`**: Representa un evento comunitario, creado por un `Usuario`.
-
-* **`Participacion`**: Es una entidad de unión que gestiona la relación de muchos a muchos entre `Usuario` y `Evento`. Un `Usuario` puede participar en múltiples `Eventos`, y un `Evento` puede tener muchos `Usuarios` apuntados.
-
+* **`Persona`**: Representa a un habitante del pueblo, que puede ser organizador y/o participante de eventos. Clase abstracta de la cual heredaran Habitante, Organizador, y Staff.
+*  **`Habitante`** : Puede unirse a eventos como participante.
+*  **`Organizador`** : Puede organizar eventos y unirse a eventos como participante. Relacion monodireccional con el evento que crea.
+*  **`Staff`**: Puede colaborar en la organizacion de eventos y unirse a otros eventos como participante. Relacion monodireccional con el evento en el que participa.
+* **`Evento`**: Representa un evento comunitario, creado por un `Organizador`.
+  
 A continuación, se presenta un diagrama de clases que ilustra la estructura de datos y sus relaciones:
 
 * **Relación `Usuario` a `Evento`**: Un `Usuario` puede ser el organizador de muchos `Eventos` (relación 1 a N).
