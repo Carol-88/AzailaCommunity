@@ -109,4 +109,4 @@ La API se estructura en tres controladores, cada uno con un conjunto de rutas **
 
 ### **8. Miembros del Equipo**
 
-* **Tu Nombre** - Desarrollador y Arquitecto del proyecto.
+* **Carolina Romero** - Desarrolladora y Arquitecta del proyecto.
