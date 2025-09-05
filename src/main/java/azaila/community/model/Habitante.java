@@ -1,4 +1,11 @@
 package azaila.community.model;
 
-public class Habitante {
+import jakarta.persistence.Entity;
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+public class Habitante extends Persona{
 }

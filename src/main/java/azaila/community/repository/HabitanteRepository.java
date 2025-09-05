@@ -1,4 +1,7 @@
 package azaila.community.repository;
 
-public interface HabitanteRepository {
+import azaila.community.model.Habitante;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface HabitanteRepository extends JpaRepository<Habitante, Long> {
 }

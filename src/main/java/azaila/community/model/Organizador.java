@@ -1,4 +1,23 @@
 package azaila.community.model;
 
-public class Organizador {
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+public class Organizador extends Persona{
+
+    @OneToMany(mappedBy = "organizador")
+    private Set<Evento> eventosCreados = new HashSet<>();
+
+//    public void addEvento(Evento evento) {
+//        this.eventosCreados.add(evento);
+//        evento.setOrganizador(this);
+//    }
 }
