@@ -3,7 +3,6 @@ package azaila.community.service.interfaces;
 import azaila.community.dto.evento.EventoRequestDTO;
 import azaila.community.dto.evento.EventoResponseDTO;
 import azaila.community.dto.evento.EventoUpdateDTO;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 

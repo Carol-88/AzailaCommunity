@@ -23,12 +23,18 @@ import java.util.stream.Collectors;
 @Service
 public class EventoServiceImpl implements EventoService {
 
-    @Autowired
-    EventoRepository eventoRepository;
-    @Autowired
-    OrganizadorRepository organizadorRepository;
-    @Autowired
-    PersonaRepository personaRepository;
+
+    private final EventoRepository eventoRepository;
+
+    private final OrganizadorRepository organizadorRepository;
+
+    private final PersonaRepository personaRepository;
+
+    public EventoServiceImpl(EventoRepository eventoRepository, OrganizadorRepository organizadorRepository, PersonaRepository personaRepository) {
+        this.eventoRepository = eventoRepository;
+        this.organizadorRepository = organizadorRepository;
+        this.personaRepository = personaRepository;
+    }
 
     @Override
     @Transactional
@@ -150,6 +156,7 @@ public class EventoServiceImpl implements EventoService {
         dto.setMaximoParticipantes(evento.getMaximoParticipantes());
         dto.setEstado(evento.getEstado());
         dto.setOrganizadorId(evento.getOrganizador().getId());
+        dto.setParticipantesActuales(evento.getParticipantes().size());
         return dto;
     }
 }
