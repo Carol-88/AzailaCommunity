@@ -12,6 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Staff extends Persona {
+    private Integer numeroStaff;
+    private Long numeroHoras;
 
     @ManyToMany(mappedBy = "staff")
     private Set<Evento> eventosColaborados = new HashSet<>();

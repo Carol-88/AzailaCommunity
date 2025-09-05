@@ -28,10 +28,10 @@ public abstract class Persona {
     private String email;
 
     @Column(nullable = true)
-    private String telefono;
+    private String password;
 
     @Column(nullable = true)
-    private String password;
+    private String telefono;
 
     @Column(nullable = true)
     private LocalDate fechaNacimiento;

@@ -12,6 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Organizador extends Persona{
+    private String nombreOrganizacion;
+    private Integer ranking;
 
     @OneToMany(mappedBy = "organizador")
     private Set<Evento> eventosCreados = new HashSet<>();

@@ -45,11 +45,10 @@ public class Evento {
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organizador_id", nullable = false)
     private Organizador organizador;
 
     @ManyToMany(mappedBy = "eventos")
-    private Set<Persona> participantes = new HashSet<>();
+    private Set<Participante> participantes = new HashSet<>();
 
     @ManyToMany
     @JoinTable(

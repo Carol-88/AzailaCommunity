@@ -122,11 +122,11 @@ public class EventoServiceImpl implements EventoService {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado con ID: " + eventoId));
 
-        Persona persona = personaRepository.findById(personaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + personaId));
+   //     Persona persona = personaRepository.findById(personaId)
+  //              .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + personaId));
 
         // Lógica de negocio para unirse a un evento
-        evento.getParticipantes().add(persona);
+    //    evento.getParticipantes().add(persona);
         eventoRepository.save(evento);
     }
 
@@ -136,11 +136,11 @@ public class EventoServiceImpl implements EventoService {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado con ID: " + eventoId));
 
-        Persona persona = personaRepository.findById(personaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + personaId));
+  //      Persona persona = personaRepository.findById(personaId)
+   //             .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + personaId));
 
         // Lógica de negocio para salir de un evento
-        evento.getParticipantes().remove(persona);
+   //     evento.getParticipantes().remove(persona);
         eventoRepository.save(evento);
     }
 
