@@ -1,4 +1,4 @@
 package azaila.community.controller;
 
-public class HabitanteController {
+public class ParticipanteController {
 }

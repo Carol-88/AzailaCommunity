@@ -1,4 +1,4 @@
 package azaila.community.service.impl;
 
-public class HabitanteServiceImpl {
+public class ParticipanteServiceImpl {
 }
