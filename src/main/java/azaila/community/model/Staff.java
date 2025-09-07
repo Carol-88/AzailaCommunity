@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 public class Staff extends Persona {
     private Integer numeroStaff;
-    private Long numeroHoras;
+    private Integer numeroEventosColaborados;
 
     @ManyToMany(mappedBy = "staff")
     private Set<Evento> eventosColaborados = new HashSet<>();

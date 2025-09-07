@@ -31,6 +31,7 @@ public class Evento {
     @Column(nullable = false)
     private String ubicacion;
 
+    @Column(nullable = false)
     private LocalDate fecha;
 
     private LocalTime hora;
@@ -39,15 +40,26 @@ public class Evento {
 
     private Integer maximoParticipantes;
 
+    @Column(nullable = false)
+    private Boolean requiereInscripcion;
+
     @Enumerated(EnumType.STRING)
     private EstadoEvento estado;
+
+    private Integer votaciones;
 
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizador_id", nullable = false)
     private Organizador organizador;
 
-    @ManyToMany(mappedBy = "eventos")
+    @ManyToMany
+    @JoinTable(
+            name = "evento_participante",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "participante_id")
+    )
     private Set<Participante> participantes = new HashSet<>();
 
     @ManyToMany

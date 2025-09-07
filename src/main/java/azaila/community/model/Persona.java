@@ -38,6 +38,4 @@ public abstract class Persona {
 
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    @ManyToMany(mappedBy = "participantes")
-    private Set<Evento> eventos = new HashSet<>();
 }

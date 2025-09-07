@@ -18,6 +18,7 @@ public class EventoResponseDTO {
     private String ubicacion;
     private LocalDate fecha;
     private LocalTime hora;
+    private Integer votaciones;
     private Integer minimoParticipantes;
     private Integer maximoParticipantes;
     private EstadoEvento estado;

@@ -16,6 +16,8 @@ public class EventoRequestDTO {
     private String ubicacion;
     private LocalDate fecha;
     private LocalTime hora;
+    private Integer votaciones;
+    private Boolean requiereInscripcion;
     private Integer minimoParticipantes;
     private Integer maximoParticipantes;
     private Long organizadorId; // ID del organizador que crea el evento
