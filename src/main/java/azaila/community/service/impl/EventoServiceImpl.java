@@ -7,13 +7,11 @@ import azaila.community.enums.EstadoEvento;
 import azaila.community.exception.ResourceNotFoundException;
 import azaila.community.model.Evento;
 import azaila.community.model.Organizador;
-import azaila.community.model.Persona;
 import azaila.community.repository.EventoRepository;
 import azaila.community.repository.OrganizadorRepository;
 import azaila.community.repository.PersonaRepository;
 import azaila.community.service.interfaces.EventoService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -121,12 +119,6 @@ public class EventoServiceImpl implements EventoService {
     public void apuntarseAEvento(Long eventoId, Long personaId) {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado con ID: " + eventoId));
-
-   //     Persona persona = personaRepository.findById(personaId)
-  //              .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + personaId));
-
-        // Lógica de negocio para unirse a un evento
-    //    evento.getParticipantes().add(persona);
         eventoRepository.save(evento);
     }
 
@@ -135,12 +127,6 @@ public class EventoServiceImpl implements EventoService {
     public void desapuntarseDeEvento(Long eventoId, Long personaId) {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado con ID: " + eventoId));
-
-  //      Persona persona = personaRepository.findById(personaId)
-   //             .orElseThrow(() -> new ResourceNotFoundException("Persona no encontrada con ID: " + personaId));
-
-        // Lógica de negocio para salir de un evento
-   //     evento.getParticipantes().remove(persona);
         eventoRepository.save(evento);
     }
 
