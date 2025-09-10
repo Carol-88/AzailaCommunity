@@ -9,7 +9,7 @@ import azaila.community.model.Evento;
 import azaila.community.model.Organizador;
 import azaila.community.repository.EventoRepository;
 import azaila.community.repository.OrganizadorRepository;
-import azaila.community.repository.PersonaRepository;
+import azaila.community.repository.PersonaIdentidadRepository;
 import azaila.community.service.interfaces.EventoService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -26,12 +26,12 @@ public class EventoServiceImpl implements EventoService {
 
     private final OrganizadorRepository organizadorRepository;
 
-    private final PersonaRepository personaRepository;
+    private final PersonaIdentidadRepository personaIdentidadRepository;
 
-    public EventoServiceImpl(EventoRepository eventoRepository, OrganizadorRepository organizadorRepository, PersonaRepository personaRepository) {
+    public EventoServiceImpl(EventoRepository eventoRepository, OrganizadorRepository organizadorRepository, PersonaIdentidadRepository personaRepository) {
         this.eventoRepository = eventoRepository;
         this.organizadorRepository = organizadorRepository;
-        this.personaRepository = personaRepository;
+        this.personaIdentidadRepository = personaRepository;
     }
 
     @Override

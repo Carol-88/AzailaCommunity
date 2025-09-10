@@ -5,10 +5,15 @@ import azaila.community.dto.participante.ParticipanteResponseDTO;
 import azaila.community.dto.participante.ParticipanteUpdateDTO;
 import azaila.community.exception.ResourceNotFoundException;
 import azaila.community.model.Participante;
+import azaila.community.model.PersonaIdentidad;
 import azaila.community.repository.ParticipanteRepository;
+import azaila.community.repository.PersonaIdentidadRepository;
 import azaila.community.service.interfaces.ParticipanteService;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ParticipanteServiceImpl implements ParticipanteService {
@@ -19,39 +24,42 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         this.participanteRepository = participanteRepository;
     }
 
+    @Autowired
+    PersonaIdentidadRepository personaIdentidadRepository;
+
+    private PersonaIdentidad findOrCreateIdentidad(String email, String telefono){
+        Optional<PersonaIdentidad> byEmail = (email != null) ? personaIdentidadRepository.findByEmail(email) : Optional.empty();
+        if(byEmail.isPresent()) return byEmail.get();
+        Optional<PersonaIdentidad> byTelefono = (telefono != null) ? personaIdentidadRepository.findByTelefono(telefono) : Optional.empty();
+        if(byTelefono.isPresent()) return byTelefono.get();
+
+        PersonaIdentidad nueva = new PersonaIdentidad();
+        nueva.setEmail(email);
+        nueva.setTelefono(telefono);
+        return personaIdentidadRepository.save(nueva);
+    }
+
     @Override
     @Transactional
-    public ParticipanteResponseDTO createParticipante(ParticipanteRequestDTO participanteDTO) {
-        Participante participante = new Participante();
-        if (participanteDTO.getNombreCompleto() == null || participanteDTO.getNombreCompleto().isEmpty()) {
-            throw new IllegalArgumentException("El nombre completo es obligatorio.");
-        }
-        if (participanteDTO.getEmail() == null && participanteDTO.getTelefono() == null) {
-            throw new IllegalArgumentException("Se requiere al menos un email o un teléfono para el registro.");
-        }
-        // Si el e-mail ya existe, extraer los datos de la persona de la DB
-        // Si el mail no existe, operar con normalidad
-        // 1º Dentro del If buscar si la persona ya existe por e-mail o por telefono.
-        // 2º Si existe:
-            // 1º Obtener la id de la persona
-            // 2º Crear un DTO de actualización con los datos del DTO de creación
-            // 3º Llamar al méthod de actualización con la id y el DTO de actualización
-        // 3º Si no existe, crear la persona con normalidad
-        if(){
-            Long id = participanteRepository.findByEmail(participanteDTO.getEmail()).getId();
-            ParticipanteUpdateDTO participanteDTO = new ParticipanteUpdateDTO();
-            // ParticipanteRequest -> ParticipanteUpdate
-            return updateParticipante(id, participanteDTO);
-        } else {
-            participante.setNombreCompleto(participanteDTO.getNombreCompleto());
-            participante.setEmail(participanteDTO.getEmail());
-            participante.setPassword(participanteDTO.getPassword());
-            participante.setTelefono(participanteDTO.getTelefono());
-            participante.setDieta(participanteDTO.getDieta());
-            participante.setPrioridadDiscapacidad(participanteDTO.getPrioridadDiscapacidad());
-        }
-        Participante nuevoParticipante = participanteRepository.save(participante);
-        return mapToResponseDTO(nuevoParticipante);
+    public ParticipanteResponseDTO createParticipante(ParticipanteRequestDTO dto) {
+        // Condiciones de seguridad.
+
+        PersonaIdentidad identidad = findOrCreateIdentidad(dto.getEmail(), dto.getTelefono());
+
+        Participante participante = participanteRepository.findById(identidad.getId())
+                .orElseGet(()->{
+                    Participante p = new Participante();
+                    p.setIdentidad(identidad);
+                    return p;
+                });
+
+        participante.setNombreCompleto(dto.getNombreCompleto());
+        participante.setPassword(dto.getPassword());
+        participante.setDieta(dto.getDieta());
+        participante.setPrioridadDiscapacidad(dto.getPrioridadDiscapacidad());
+
+        Participante savedParticipante = participanteRepository.save(participante);
+        return mapToResponseDTO(savedParticipante);
     }
 
     @Override
@@ -70,14 +78,8 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         if (participanteDTO.getNombreCompleto() != null) {
             participante.setNombreCompleto(participanteDTO.getNombreCompleto());
         }
-        if (participanteDTO.getEmail() != null) {
-            participante.setEmail(participanteDTO.getEmail());
-        }
         if (participanteDTO.getPassword() != null) {
             participante.setPassword(participanteDTO.getPassword());
-        }
-        if (participanteDTO.getTelefono() != null) {
-            participante.setTelefono(participanteDTO.getTelefono());
         }
         if (participanteDTO.getDieta() != null) {
             participante.setDieta(participanteDTO.getDieta());
@@ -103,11 +105,8 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         ParticipanteResponseDTO dto = new ParticipanteResponseDTO();
         dto.setId(participante.getId());
         dto.setNombreCompleto(participante.getNombreCompleto());
-        dto.setEmail(participante.getEmail());
-        dto.setTelefono(participante.getTelefono());
         dto.setDieta(participante.getDieta());
         dto.setPrioridadDiscapacidad(participante.getPrioridadDiscapacidad());
-        dto.setFechaCreacion(participante.getFechaCreacion());
         return dto;
     }
 }
