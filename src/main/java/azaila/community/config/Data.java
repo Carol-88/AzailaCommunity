@@ -23,7 +23,7 @@ public class Data implements CommandLineRunner {
     private final PersonaIdentidadRepository identidadRepository;
     private final EventoRepository eventoRepository;
 
-    public Data(OrganizadorRepository organizadorRepository, ParticipanteRepository participanteRepository, StaffRepository staffRepository, PersonaIdentidadRepository identidadRepository) {
+    public Data(OrganizadorRepository organizadorRepository, ParticipanteRepository participanteRepository, StaffRepository staffRepository, PersonaIdentidadRepository identidadRepository, EventoRepository eventoRepository) {
         this.organizadorRepository = organizadorRepository;
         this.participanteRepository = participanteRepository;
         this.staffRepository = staffRepository;
@@ -41,29 +41,29 @@ public class Data implements CommandLineRunner {
         PersonaIdentidad idPaco = findOrCreateIdentidad(null, "987654321");
         PersonaIdentidad idAna = findOrCreateIdentidad(null, "555666777");
 
-        Organizador paquitaOrg = getOrCreateOrganizador(idPaquita,"Paquita");
-        Staff paquitaStf = getOrCreateStaff(idPaquita,"Paquita");
-        Participante paquitaPart = getOrCreateParticipante(idPaquita,"Paquita");
+        Organizador paquitaOrg = getOrCreateOrganizador(idPaquita,"Paquita", 10);
+        Staff paquitaStf = getOrCreateStaff(idPaquita,"Paquita", 12345);
+        Participante paquitaPart = getOrCreateParticipante(idPaquita,"Paquita", Dieta.SIN_GLUTEN, PrioridadDiscapacidad.NINGUNA);
 
-        Organizador antonioOrg = getOrCreateOrganizador(idAntonio,"Antonio");
-        Staff antonioStf = getOrCreateStaff(idAntonio,"Antonio");
-        Participante antonioPart = getOrCreateParticipante(idAntonio,"Antonio");
+        Organizador antonioOrg = getOrCreateOrganizador(idAntonio,"Antonio", 9);
+        Staff antonioStf = getOrCreateStaff(idAntonio,"Antonio", 54321);
+        Participante antonioPart = getOrCreateParticipante(idAntonio,"Antonio", Dieta.VEGETARIANA, PrioridadDiscapacidad.FISICA);
 
-        Organizador pepeOrg = getOrCreateOrganizador(idPepe,"Pepe");
-        Staff pepe = getOrCreateStaff(idPepe,"Pepe");
-        Participante pepePart = getOrCreateParticipante(idPepe,"Pepe");
+        Organizador pepeOrg = getOrCreateOrganizador(idPepe,"Pepe", null);
+        Staff pepe = getOrCreateStaff(idPepe,"Pepe", 11111);
+        Participante pepePart = getOrCreateParticipante(idPepe,"Pepe", Dieta.SIN_LACTOSA, PrioridadDiscapacidad.NINGUNA);
 
-        Organizador juanaOrg = getOrCreateOrganizador(idJuana,"Juana");
-        Staff juanaStf = getOrCreateStaff(idJuana,"Juana");
-        Participante juanaPart = getOrCreateParticipante(idJuana,"Juana");
+        Organizador juanaOrg = getOrCreateOrganizador(idJuana,"Juana", null);
+        Staff juanaStf = getOrCreateStaff(idJuana,"Juana", 11223);
+        Participante juanaPart = getOrCreateParticipante(idJuana,"Juana", Dieta.HIPERTENSIVA, PrioridadDiscapacidad.VISUAL);
 
-        Organizador pacoOrg = getOrCreateOrganizador(idPaco,"Paco");
-        Staff pacoStf = getOrCreateStaff(idPaco,"Paco");
-        Participante pacoPart = getOrCreateParticipante(idPaco,"Paco");
+        Organizador pacoOrg = getOrCreateOrganizador(idPaco,"Paco", null);
+        Staff pacoStf = getOrCreateStaff(idPaco,"Paco", 67890);
+        Participante pacoPart = getOrCreateParticipante(idPaco,"Paco", Dieta.DIABETICA, PrioridadDiscapacidad.AUDITIVA);
 
-        Organizador anaOrg = getOrCreateOrganizador(idAna,"Ana");
-        Staff anaStf = getOrCreateStaff(idAna,"Ana");
-        Participante anaPart = getOrCreateParticipante(idAna,"Ana");
+        Organizador anaOrg = getOrCreateOrganizador(idAna,"Ana", 8);
+        Staff anaStf = getOrCreateStaff(idAna,"Ana", 98765);
+        Participante anaPart = getOrCreateParticipante(idAna,"Ana", Dieta.NINGUNA, PrioridadDiscapacidad.FISICA);
 
 
         // Crear Eventos y asignarles los roles
@@ -168,30 +168,34 @@ public class Data implements CommandLineRunner {
         return identidadRepository.save(nuevaIdentidad);
     }
 
-        private Organizador getOrCreateOrganizador(PersonaIdentidad identidad, String nombreCompleto) {
+        private Organizador getOrCreateOrganizador(PersonaIdentidad identidad, String nombreCompleto, Integer ranking){
             Organizador org = organizadorRepository.findById(identidad.getId()).orElseGet(()->{
                 Organizador o = new Organizador();
                 o.setIdentidad(identidad);
+                o.setRanking(ranking);
                 return o;
             });
             org.setNombreCompleto(nombreCompleto);
             return organizadorRepository.save(org);
         }
 
-        private Staff getOrCreateStaff(PersonaIdentidad identidad, String nombreCompleto){
+        private Staff getOrCreateStaff(PersonaIdentidad identidad, String nombreCompleto, Integer numeroStaff){
             Staff stf = staffRepository.findById(identidad.getId()).orElseGet(() -> {
                 Staff s = new Staff();
                 s.setIdentidad(identidad);
+                s.setNumeroStaff(numeroStaff);
                 return s;
             });
             stf.setNombreCompleto(nombreCompleto);
             return staffRepository.save(stf);
         }
 
-        private Participante getOrCreateParticipante(PersonaIdentidad identidad, String nombreCompleto){
+        private Participante getOrCreateParticipante(PersonaIdentidad identidad, String nombreCompleto, Dieta dieta, PrioridadDiscapacidad prioridadDiscapacidad){
             Participante part = participanteRepository.findById(identidad.getId()).orElseGet(() -> {
                 Participante p = new Participante();
                 p.setIdentidad(identidad);
+                p.setDieta(dieta);
+                p.setPrioridadDiscapacidad(prioridadDiscapacidad);
                 return p;
             });
             part.setNombreCompleto(nombreCompleto);

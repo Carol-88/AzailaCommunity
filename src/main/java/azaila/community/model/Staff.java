@@ -9,7 +9,5 @@ import lombok.*;
 @Entity
 public class Staff extends Persona {
     private Integer numeroStaff;
-    private Integer numeroEventosColaborados;
-
 }
 
