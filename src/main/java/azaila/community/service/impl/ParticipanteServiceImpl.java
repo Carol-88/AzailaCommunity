@@ -22,21 +22,34 @@ public class ParticipanteServiceImpl implements ParticipanteService {
     @Override
     @Transactional
     public ParticipanteResponseDTO createParticipante(ParticipanteRequestDTO participanteDTO) {
+        Participante participante = new Participante();
         if (participanteDTO.getNombreCompleto() == null || participanteDTO.getNombreCompleto().isEmpty()) {
             throw new IllegalArgumentException("El nombre completo es obligatorio.");
         }
         if (participanteDTO.getEmail() == null && participanteDTO.getTelefono() == null) {
             throw new IllegalArgumentException("Se requiere al menos un email o un teléfono para el registro.");
         }
-
-        Participante participante = new Participante();
-        participante.setNombreCompleto(participanteDTO.getNombreCompleto());
-        participante.setEmail(participanteDTO.getEmail());
-        participante.setPassword(participanteDTO.getPassword());
-        participante.setTelefono(participanteDTO.getTelefono());
-        participante.setDieta(participanteDTO.getDieta());
-        participante.setPrioridadDiscapacidad(participanteDTO.getPrioridadDiscapacidad());
-
+        // Si el e-mail ya existe, extraer los datos de la persona de la DB
+        // Si el mail no existe, operar con normalidad
+        // 1º Dentro del If buscar si la persona ya existe por e-mail o por telefono.
+        // 2º Si existe:
+            // 1º Obtener la id de la persona
+            // 2º Crear un DTO de actualización con los datos del DTO de creación
+            // 3º Llamar al méthod de actualización con la id y el DTO de actualización
+        // 3º Si no existe, crear la persona con normalidad
+        if(){
+            Long id = participanteRepository.findByEmail(participanteDTO.getEmail()).getId();
+            ParticipanteUpdateDTO participanteDTO = new ParticipanteUpdateDTO();
+            // ParticipanteRequest -> ParticipanteUpdate
+            return updateParticipante(id, participanteDTO);
+        } else {
+            participante.setNombreCompleto(participanteDTO.getNombreCompleto());
+            participante.setEmail(participanteDTO.getEmail());
+            participante.setPassword(participanteDTO.getPassword());
+            participante.setTelefono(participanteDTO.getTelefono());
+            participante.setDieta(participanteDTO.getDieta());
+            participante.setPrioridadDiscapacidad(participanteDTO.getPrioridadDiscapacidad());
+        }
         Participante nuevoParticipante = participanteRepository.save(participante);
         return mapToResponseDTO(nuevoParticipante);
     }
